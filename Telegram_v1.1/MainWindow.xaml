@@ -1,0 +1,247 @@
+﻿<Window x:Class="Telegram_v1._1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Telegram_v1._1"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="590" Width="870">
+    
+  
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MaxWidth="350"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <!--User List-->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <!--Search Menu-->
+            <DockPanel>
+                <!--Hamburger Button-->
+                <Button
+                    Background="White"
+                    BorderThickness="0"
+                    Margin="17">
+                    <Image Source="/Images/menu.png"/>
+                </Button>
+                <!--Search TextBox-->
+                <Border
+                    BorderThickness="1.7"
+                    BorderBrush="#FF1E9CD6"
+                    CornerRadius="3"
+                    Margin="10,16,10,16">
+                    <TextBox 
+                        IsEnabled="False"
+                        BorderThickness="0"
+                        Text="Search"
+                        VerticalContentAlignment="Center"
+                        Padding="5,0,0,0"
+                        FontSize="14"
+                        DockPanel.Dock="Right"
+                        Foreground="#FFA2A2A2"/>
+                </Border>
+            </DockPanel>
+            <!--Users List-->
+            <ListView 
+                x:Name="UserListView"
+                HorizontalContentAlignment="Stretch"
+                BorderThickness="0" 
+                Grid.Row="1" 
+                SelectionChanged="ListView_SelectionChanged"
+                ItemsSource="{Binding Users}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="50">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition MaxWidth="60"></ColumnDefinition>
+                                <ColumnDefinition Width="2.5*"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <!--Profile Image-->
+                            <Image 
+                            Source="{Binding ImgSource}"
+                            Margin="3"
+                            HorizontalAlignment="Left"
+                            Grid.RowSpan="2"/>
+                            <!--Username-->
+                            <TextBlock 
+                            Text="{Binding Username}"
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            VerticalAlignment="Center" 
+                            FontSize="15" 
+                            FontFamily="Malgun Gothic" 
+                            FontWeight="Bold"/>
+                            <!--Last Message-->
+                            <TextBlock
+                            Text="{Binding LastMessage}"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            VerticalAlignment="Center" 
+                            Padding="0,0,0,5"
+                            Foreground="Gray"/>
+                            <!--Last Message Time-->
+                            <TextBlock 
+                            Text="{Binding LastMessageTime}"
+                            Grid.Column="2"
+                            Grid.Row="0"
+                                Padding="0,0,10,0"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right" 
+                            Foreground="Gray"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        <!--Chat-->
+        <Grid Grid.Column="1">
+            <Grid.Background>
+                <ImageBrush ImageSource="/Images/background.png"/>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+            </Grid.RowDefinitions>
+            <!--Chat Menu-->
+            <DockPanel x:Name="UserInfo" Visibility="Hidden" Background="White">
+                <!--User-->
+                <StackPanel 
+                    Margin="30,0,0,0"
+                    VerticalAlignment="Center">
+                    <TextBlock
+                        FontSize="13" 
+                        FontFamily="Malgun Gothic" 
+                        FontWeight="Bold"
+                        Text="{Binding Username}"/>
+                    <TextBlock
+                        Padding="0,2"
+                        FontSize="11"
+                        Foreground="#FF1E9CD6"
+                        Text="Online"/>
+                </StackPanel>
+                <!--Buttons-->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <!--Search-->
+                    <Button
+                        Background="White"
+                        BorderThickness="0"
+                        Margin="7,19">
+                        <Image Source="/Images/search.png"/>
+                    </Button>
+                    <!--Call-->
+                    <Button
+                        Background="White"
+                        BorderThickness="0"
+                        Margin="7,19">
+                        <Image Source="/Images/call.png"/>
+                    </Button>
+                    <!--Menu-->
+                    <Button
+                        Background="White"
+                        BorderThickness="0"
+                        Margin="7,14">
+                        <Image Source="/Images/sidebar.png"/>
+                    </Button>
+                    <!--Dots-->
+                    <Button
+                        Background="White"
+                        BorderThickness="0"
+                        Margin="7,19">
+                        <Image Source="/Images/dots.png"/>
+                    </Button>
+                </StackPanel>
+            </DockPanel>
+            <!--Chat List-->
+            <ScrollViewer x:Name="ChatScroll" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Chats}" >
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel 
+                                MaxWidth="320"
+                                Height="auto"
+                                Background="{Binding BackColor}"
+                                HorizontalAlignment="{Binding Alignment}"
+                                Margin="5,6">
+                                <!--Text-->
+                                <TextBlock 
+                                    Text="{Binding Text}" 
+                                    FontSize="16"
+                                    Foreground="{Binding TextColor}"
+                                    Padding="10,5,10,0"
+                                    TextWrapping="Wrap"/>
+                                <!--Time-->
+                                <TextBlock 
+                                Text="{Binding Time}" 
+                                FontSize="8" 
+                                DockPanel.Dock="Bottom" 
+                                HorizontalAlignment="{Binding Alignment}"
+                                Foreground="{Binding TextColor}"
+                                Padding="10,0,4,3"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+            <!--Message Panel-->
+            <Grid Background="White" Grid.Row="2"  x:Name="MsgBox" Visibility="Hidden">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="76"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <!--Attach File-->
+                <Button
+                    Background="White"
+                    BorderThickness="0"
+                    Margin="5,13">
+                    <Image Source="/Images/paperclip.png"/>
+                </Button>
+                <!--Message Box-->
+                <TextBox
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    Padding="10"
+                    Foreground="#FFA2A2A2"
+                    FontSize="14"
+                    FontFamily="Malgun Gothic"
+                    BorderThickness="0"
+                    Text="Write a message..."
+                    VerticalAlignment="Center" 
+                    Margin="0,6"
+                    KeyDown="TextBox_KeyDown"
+                    GotFocus="TextBox_MouseEnter"
+                    LostFocus="TextBox_MouseLeave"/>
+                <DockPanel Grid.Column="2 ">
+                    <!--Smile-->
+                    <Button
+                        Background="White"
+                        BorderThickness="0"
+                        Margin="5,14"
+                        HorizontalAlignment="Right">
+                        <Image Source="/Images/smile.png"/>
+                    </Button>
+                    <!--Microphone-->
+                    <Button 
+                        Background="White"
+                        BorderThickness="0"
+                        Margin="0,14,10,14"
+                        HorizontalAlignment="Right">
+                        <Image Source="/Images/microphone.png"/>
+                    </Button>
+                </DockPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
